@@ -1,22 +1,32 @@
-# OrbitScope
+# OrbitScope 🛰️
 
-OrbitScope is a real-time satellite tracking and space analytics web application.
+OrbitScope is a satellite tracking and observation dashboard that helps users explore satellites, monitor their positions, predict visible passes, and plan observations.
 
-## Features
+## ✨ Features
 
-- Live satellite tracking
-- Earth visualization
-- Satellite search
-- Orbit prediction
-- Dashboard
-- User authentication
+- 🛰️ Real-time satellite tracking
+- 🌍 Interactive 3D Earth and orbital visualization
+- 🔭 Satellite pass predictions
+- ⭐ Favorite satellites
+- 📍 Observer location management
+- 🌙 Night and darkness planning
+- 🔔 Pass alerts
+- 📊 Orbit analytics and satellite comparison
+- 📈 Historical satellite tracking
+- 🤖 Best satellite recommendation
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- Python
-- FastAPI
-- HTML
-- CSS
-- JavaScript
-- PostgreSQL
-- Skyfield
+**Frontend:** React, TypeScript, Vite, Three.js  
+**Backend:** FastAPI, Python, SQLAlchemy  
+**Database:** PostgreSQL / SQLite  
+**Authentication:** JWT
+
+## 🚀 Project Structure
+
+```text
+OrbitScope/
+├── backend/
+├── frontend/
+├── data/
+└── README.md
