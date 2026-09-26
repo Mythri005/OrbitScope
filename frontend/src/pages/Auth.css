@@ -1,0 +1,571 @@
+.auth-page {
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 40%,
+      rgba(35, 100, 170, 0.14),
+      transparent 32%
+    ),
+    radial-gradient(
+      ellipse at 85% 15%,
+      rgba(85, 55, 170, 0.12),
+      transparent 30%
+    ),
+    radial-gradient(
+      ellipse at 10% 85%,
+      rgba(20, 120, 170, 0.09),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #02060d 0%,
+      #050a14 50%,
+      #07091a 100%
+    );
+
+  color: #f4f7fb;
+}
+
+/* Star field */
+
+.auth-stars {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background-image:
+    radial-gradient(
+      circle at 8% 18%,
+      rgba(255,255,255,0.8) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 22% 72%,
+      rgba(140,205,255,0.65) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 37% 24%,
+      rgba(255,255,255,0.55) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 48% 82%,
+      rgba(130,190,255,0.55) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 63% 15%,
+      rgba(255,255,255,0.65) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 76% 67%,
+      rgba(150,210,255,0.5) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 89% 31%,
+      rgba(255,255,255,0.7) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 94% 84%,
+      rgba(120,190,255,0.5) 0 1px,
+      transparent 1.5px
+    );
+
+  opacity: 0.65;
+}
+
+/* Subtle orbital ring */
+
+.auth-page::after {
+  content: "";
+
+  position: absolute;
+
+  width: 900px;
+  height: 900px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(64, 180, 235, 0.055);
+
+  transform:
+    rotate(-22deg)
+    scaleX(0.32);
+
+  pointer-events: none;
+}
+
+
+/* Second orbital ring */
+
+.auth-stars::before {
+  content: "";
+
+  position: absolute;
+
+  width: 760px;
+  height: 760px;
+
+  left: 50%;
+  top: 50%;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(82, 194, 255, 0.045);
+
+  transform:
+    translate(-50%, -50%)
+    rotate(35deg)
+    scaleX(0.22);
+
+  pointer-events: none;
+}
+
+
+/* Soft atmospheric glow */
+
+.auth-stars::after {
+  content: "";
+
+  position: absolute;
+
+  width: 520px;
+  height: 520px;
+
+  left: 50%;
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(45, 130, 205, 0.055),
+      transparent 65%
+    );
+
+  filter: blur(20px);
+
+  pointer-events: none;
+}
+
+/* Brand */
+
+.auth-brand {
+  position: absolute;
+
+  top: 34px;
+  left: 42px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 2px;
+
+  z-index: 2;
+}
+
+.auth-brand svg {
+  color: #54c7ff;
+}
+
+.brand-accent {
+  color: #54c7ff;
+}
+
+/* Card */
+
+.auth-card {
+  position: relative;
+  z-index: 2;
+
+  width: min(420px, calc(100vw - 40px));
+
+  padding: 38px;
+
+  border: 1px solid rgba(110, 180, 255, 0.16);
+  border-radius: 22px;
+
+  background: rgba(9, 17, 30, 0.78);
+
+  backdrop-filter: blur(20px);
+
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.55),
+    0 0 80px rgba(45, 145, 220, 0.055),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+/* Icon */
+
+.auth-icon {
+  width: 54px;
+  height: 54px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 24px;
+
+  border-radius: 15px;
+
+  background: rgba(68, 184, 255, 0.1);
+  border: 1px solid rgba(68, 184, 255, 0.2);
+
+  color: #54c7ff;
+}
+
+/* Heading */
+
+.auth-heading h1 {
+  margin: 0 0 10px;
+
+  font-size: 30px;
+  font-weight: 650;
+  letter-spacing: -0.8px;
+}
+
+.auth-heading p {
+  margin: 0 0 30px;
+
+  color: #8493a8;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Form */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 12px;
+
+  color: #9aa9bd;
+
+  font-weight: 600;
+
+  letter-spacing: 0.4px;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+
+  height: 48px;
+
+  padding: 0 14px;
+
+  border: 1px solid rgba(120, 150, 180, 0.18);
+  border-radius: 11px;
+
+  background: rgba(3, 9, 17, 0.7);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.input-wrapper svg {
+  color: #60748b;
+
+  flex-shrink: 0;
+}
+
+.input-wrapper:focus-within {
+  border-color: rgba(84, 199, 255, 0.65);
+
+  box-shadow:
+    0 0 0 3px rgba(84, 199, 255, 0.08),
+    0 0 25px rgba(84, 199, 255, 0.06);
+}
+
+.input-wrapper input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #f4f7fb;
+
+  padding-left: 12px;
+
+  font-size: 14px;
+}
+
+.input-wrapper input::placeholder {
+  color: #4e5d70;
+}
+
+/* Error */
+
+.auth-error {
+  padding: 11px 13px;
+
+  border-radius: 9px;
+
+  border: 1px solid rgba(255, 90, 90, 0.2);
+
+  background: rgba(255, 70, 70, 0.07);
+
+  color: #ff8d8d;
+
+  font-size: 13px;
+}
+
+/* Button */
+
+.auth-submit {
+  height: 49px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  margin-top: 4px;
+
+  border: none;
+  border-radius: 11px;
+
+  background: linear-gradient(
+    135deg,
+    #39bdf8,
+    #6575ff
+  );
+
+  color: white;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  letter-spacing: 0.3px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 8px 30px rgba(63, 157, 255, 0.2);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.auth-submit:hover {
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 12px 35px rgba(63, 157, 255, 0.32);
+}
+
+.auth-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Divider */
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin: 27px 0 20px;
+
+  color: #4f6075;
+
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+
+  flex: 1;
+
+  height: 1px;
+
+  background: rgba(120, 150, 180, 0.12);
+}
+
+/* Signup */
+
+.auth-switch {
+  margin: 0;
+
+  text-align: center;
+
+  color: #68788c;
+
+  font-size: 13px;
+}
+
+.auth-switch a {
+  margin-left: 6px;
+
+  color: #54c7ff;
+
+  text-decoration: none;
+
+  font-weight: 600;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+
+.auth-footer {
+  position: absolute;
+
+  bottom: 28px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: #526176;
+
+  font-size: 10px;
+
+  letter-spacing: 1.5px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #46e6a0;
+
+  box-shadow: 0 0 10px rgba(70, 230, 160, 0.7);
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .auth-brand {
+    top: 22px;
+    left: 22px;
+  }
+
+  .auth-card {
+    padding: 28px 22px;
+  }
+
+  .auth-footer {
+    bottom: 18px;
+  }
+}
+
+/* =========================================================
+   ANIMATED SPACE DETAILS
+   ========================================================= */
+
+/* Slow-moving distant stars */
+.auth-stars {
+  animation: starDrift 45s linear infinite;
+}
+
+@keyframes starDrift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-25px, 18px, 0);
+  }
+}
+
+
+/* Large orbital ellipse */
+.auth-page::after {
+  width: 1050px;
+  height: 1050px;
+
+  border-color: rgba(65, 190, 245, 0.07);
+
+  transform:
+    rotate(-24deg)
+    scaleX(0.28);
+
+  animation: orbitFloat 18s ease-in-out infinite alternate;
+}
+
+@keyframes orbitFloat {
+  from {
+    transform:
+      rotate(-24deg)
+      scaleX(0.28);
+  }
+
+  to {
+    transform:
+      rotate(-20deg)
+      scaleX(0.30);
+  }
+}
+
+
+/* Subtle glow movement */
+.auth-stars::after {
+  animation: spaceGlow 12s ease-in-out infinite alternate;
+}
+
+@keyframes spaceGlow {
+  from {
+    transform: translate(-50%, -50%) scale(0.92);
+    opacity: 0.65;
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(1.08);
+    opacity: 1;
+  }
+}
+
+
+/* Respect reduced-motion accessibility settings */
+@media (prefers-reduced-motion: reduce) {
+  .auth-stars,
+  .auth-page::after,
+  .auth-stars::after {
+    animation: none;
+  }
+}
