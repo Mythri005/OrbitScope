@@ -27,7 +27,7 @@ import { useAuth } from "../../context/AuthContext";
 export default function AppLayout() {
   const navigate = useNavigate();
 
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
 
   const [profileOpen, setProfileOpen] =
     useState(false);
@@ -35,10 +35,9 @@ export default function AppLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   function handleLogout() {
-    localStorage.removeItem("access_token");
-
+    logout();
     setProfileOpen(false);
-
+    setMobileMenuOpen(false);
     navigate("/login");
   }
 

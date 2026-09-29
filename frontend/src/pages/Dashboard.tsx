@@ -94,7 +94,7 @@ function StatCard({
 export default function Dashboard() {
   const navigate = useNavigate();
 
-  const { currentUser } = useAuth();
+  const { currentUser, logout } = useAuth();
 
   const [profileOpen, setProfileOpen] =
     useState(false);
@@ -107,9 +107,10 @@ export default function Dashboard() {
   } = useObserverLocation();
 
   function handleLogout() {
-    localStorage.removeItem("access_token");
+    logout();
 
     setProfileOpen(false);
+    setMobileMenuOpen(false);
 
     navigate("/login");
   }
