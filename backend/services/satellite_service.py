@@ -1,5 +1,6 @@
 import requests
 import os
+import threading
 from pathlib import Path
 from skyfield.api import load, EarthSatellite
 #load - loads the current time (and otehr skyfield resources). 
@@ -28,6 +29,10 @@ class SatelliteService:
         self.tle_file = Path("tle_cache.txt")
         self.tle_data = None
         self.last_updated = None
+
+        self._refresh_lock = threading.Lock()
+        self._refresh_in_progress = False
+
         if self.tle_file.exists():
             self.tle_data = self.tle_file.read_text(encoding="utf-8")
             file_mtime = datetime.fromtimestamp(
@@ -35,6 +40,7 @@ class SatelliteService:
                 tz=timezone.utc
             )
             self.last_updated = file_mtime
+
             logger.info(
                 f"Loaded TLE data from local cache. "
                 f"Last updated: {self.last_updated}"
@@ -44,30 +50,54 @@ class SatelliteService:
     #     response = requests.get(url)
     #     return response.text
 
+    def _start_background_tle_refresh(self):
+        with self._refresh_lock:
+            if self._refresh_in_progress:
+                return
+
+            self._refresh_in_progress = True
+
+        def worker():
+            try:
+                self.refresh_tle_data()
+            finally:
+                with self._refresh_lock:
+                    self._refresh_in_progress = False
+
+        thread = threading.Thread(
+            target=worker,
+            daemon=True
+        )
+        thread.start()
+
     def refresh_tle_data(self):
         logger.info("Background TLE refresh started...")
         try:
             response = requests.get(
                 TLE_URL,
-                timeout=20,
+                timeout=10,
                 headers={
                     "User-Agent": "Mozilla/5.0"
                 }
             )
             response.raise_for_status()
             tle_data = response.text
-            # Basic validation
+
             if not tle_data.strip():
                 raise ValueError("CelesTrak returned empty TLE data.")
+
             self.tle_data = tle_data
             self.last_updated = datetime.now(timezone.utc)
+
             self.tle_file.write_text(
                 tle_data,
                 encoding="utf-8"
             )
+
             logger.info(
                 "Background TLE refresh completed successfully."
             )
+
         except (requests.exceptions.RequestException, ValueError) as e:
             logger.error(
                 f"Background TLE refresh failed: {e}"
@@ -75,32 +105,57 @@ class SatelliteService:
 
     def download_tle(self):
         now = datetime.now(timezone.utc)
-        if (
-            self.tle_data is None
-            or self.last_updated is None
-            or now - self.last_updated > timedelta(hours=CACHE_DURATION_HOURS)
-        ):
-            try:
-                logger.info("Downloading TLE data from CelesTrak...")
-                response = requests.get(
-                    TLE_URL,
-                    timeout=20,
-                    headers={
-                        "User-Agent": "Mozilla/5.0"
-                    }
+
+        # If we already have cached TLE data, ALWAYS use it immediately.
+        if self.tle_data is not None:
+            cache_is_old = (
+                self.last_updated is None
+                or now - self.last_updated > timedelta(hours=CACHE_DURATION_HOURS)
+            )
+
+            if cache_is_old:
+                logger.info(
+                    "TLE cache is old. Using cached data immediately "
+                    "and starting background refresh."
                 )
-                response.raise_for_status()
-                self.tle_data = response.text
-                self.last_updated = now
-                self.tle_file.write_text(
-                    self.tle_data,
-                    encoding="utf-8"
-                )
-            except requests.exceptions.RequestException as e:
-                logger.error(f"Failed to download TLE data: {e}")
-                if self.tle_data is None:
-                    raise TLEDownloadException()
-        return self.tle_data
+                self._start_background_tle_refresh()
+
+            return self.tle_data
+
+        # Only block on CelesTrak if there is NO cached data at all.
+        try:
+            logger.info("No local TLE cache found. Downloading from CelesTrak...")
+
+            response = requests.get(
+                TLE_URL,
+                timeout=10,
+                headers={
+                    "User-Agent": "Mozilla/5.0"
+                }
+            )
+
+            response.raise_for_status()
+
+            tle_data = response.text
+
+            if not tle_data.strip():
+                raise ValueError("CelesTrak returned empty TLE data.")
+
+            self.tle_data = tle_data
+            self.last_updated = now
+
+            self.tle_file.write_text(
+                tle_data,
+                encoding="utf-8"
+            )
+
+            logger.info("Initial TLE download completed successfully.")
+
+            return self.tle_data
+
+        except (requests.exceptions.RequestException, ValueError) as e:
+            logger.error(f"Failed to download initial TLE data: {e}")
+            raise TLEDownloadException()
     
     def load_satellite(self, satellite_name):
         tle_data = self.download_tle()
