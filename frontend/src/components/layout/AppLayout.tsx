@@ -10,6 +10,8 @@ import {
   Moon,
   Star,
   LogOut,
+  Menu,
+  X
 } from "lucide-react";
 
 import {
@@ -29,6 +31,8 @@ export default function AppLayout() {
 
   const [profileOpen, setProfileOpen] =
     useState(false);
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   function handleLogout() {
     localStorage.removeItem("access_token");
@@ -229,7 +233,13 @@ export default function AppLayout() {
         {/* Header */}
         <header className="top-header">
 
-          <div />
+          <button
+            className="mobile-menu-button"
+            onClick={() => setMobileMenuOpen(true)}
+            aria-label="Open navigation menu"
+          >
+            <Menu size={24} />
+          </button>
 
           <div className="header-actions">
 
@@ -276,6 +286,93 @@ export default function AppLayout() {
         <Outlet />
 
       </main>
+
+      {mobileMenuOpen && (
+        <div
+          className="mobile-menu-overlay"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      <aside className={`mobile-sidebar ${mobileMenuOpen ? "open" : ""}`}>
+        <div className="mobile-sidebar-header">
+          <div className="brand">
+            <Satellite size={22} />
+            <span>OrbitScope</span>
+          </div>
+
+          <button
+            className="mobile-menu-close"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            <X size={24} />
+          </button>
+        </div>
+
+        <nav className="mobile-nav">
+
+          <div className="nav-section-title">EXPLORE</div>
+
+          <NavLink
+            to="/"
+            end
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <Globe2 size={18} />
+            Dashboard
+          </NavLink>
+
+          <NavLink to="/satellites" onClick={() => setMobileMenuOpen(false)}>
+            <Satellite size={18} />
+            Satellites
+          </NavLink>
+
+          <NavLink to="/favorites" onClick={() => setMobileMenuOpen(false)}>
+            <Heart size={18} />
+            Favorites
+          </NavLink>
+
+
+          <div className="nav-section-title">TOOLS</div>
+
+          <NavLink to="/locations" onClick={() => setMobileMenuOpen(false)}>
+            <MapPin size={18} />
+            Locations
+          </NavLink>
+
+          <NavLink to="/night-planner" onClick={() => setMobileMenuOpen(false)}>
+            <Moon size={18} />
+            Night Planner
+          </NavLink>
+
+          <NavLink to="/pass-alerts" onClick={() => setMobileMenuOpen(false)}>
+            <Bell size={18} />
+            Pass Alerts
+          </NavLink>
+
+          <NavLink to="/tracking" onClick={() => setMobileMenuOpen(false)}>
+            <Activity size={18} />
+            Multi Tracking
+          </NavLink>
+
+          <NavLink to="/best-satellite" onClick={() => setMobileMenuOpen(false)}>
+            <Star size={18} />
+            Best Satellite
+          </NavLink>
+
+          <NavLink to="/historical-tracking" onClick={() => setMobileMenuOpen(false)}>
+            <Clock3 size={18} />
+            Historical Tracking
+          </NavLink>
+
+          <NavLink to="/satellite-comparison" onClick={() => setMobileMenuOpen(false)}>
+            <GitCompare size={18} />
+            Satellite Comparison
+          </NavLink>
+
+        </nav>
+      </aside>
 
     </div>
   );

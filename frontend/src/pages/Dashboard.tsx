@@ -17,11 +17,13 @@ import {
   Globe2,
   Heart,
   LogOut,
+  Menu,
   MapPin,
   Moon,
   Satellite,
   Search,
   Star,
+  X,
 } from "lucide-react";
 
 import OrbitGlobe from "../components/globe/OrbitGlobe";
@@ -95,6 +97,9 @@ export default function Dashboard() {
   const { currentUser } = useAuth();
 
   const [profileOpen, setProfileOpen] =
+    useState(false);
+
+  const [mobileMenuOpen, setMobileMenuOpen] =
     useState(false);
 
   const {
@@ -598,6 +603,14 @@ export default function Dashboard() {
         {/* Header */}
         <header className="topbar">
 
+          <button
+            className="mobile-menu-button"
+            onClick={() => setMobileMenuOpen(true)}
+            aria-label="Open navigation menu"
+          >
+            <Menu size={24} />
+          </button>
+
           <div>
             <div className="eyebrow">
               LIVE ORBITAL INTELLIGENCE
@@ -974,6 +987,170 @@ export default function Dashboard() {
         </section>
 
       </main>
+
+      {mobileMenuOpen && (
+        <div
+          className="mobile-menu-overlay"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      <aside
+        className={`mobile-sidebar ${
+          mobileMenuOpen ? "open" : ""
+        }`}
+      >
+        <div className="mobile-sidebar-header">
+
+          <div className="brand">
+            <div className="brand-orbit">
+              ◉
+            </div>
+
+            <div>
+              <div className="brand-name">
+                OrbitScope
+              </div>
+
+              <div className="brand-subtitle">
+                SPACE INTELLIGENCE
+              </div>
+            </div>
+          </div>
+
+          <button
+            className="mobile-menu-close"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close navigation menu"
+          >
+            <X size={24} />
+          </button>
+
+        </div>
+
+        <nav className="mobile-nav">
+
+          <div className="nav-section-title">
+            EXPLORE
+          </div>
+
+          <button
+            className="mobile-nav-item active"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/");
+            }}
+          >
+            <Globe2 size={18} />
+            Dashboard
+          </button>
+
+          <button
+            className="mobile-nav-item"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/satellites");
+            }}
+          >
+            <Satellite size={18} />
+            Satellites
+          </button>
+
+          <button
+            className="mobile-nav-item"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/favorites");
+            }}
+          >
+            <Heart size={18} />
+            Favorites
+          </button>
+
+          <div className="nav-section-title">
+            TOOLS
+          </div>
+
+          <button
+            className="mobile-nav-item"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/locations");
+            }}
+          >
+            <MapPin size={18} />
+            Locations
+          </button>
+
+          <button
+            className="mobile-nav-item"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/night-planner");
+            }}
+          >
+            <Moon size={18} />
+            Night Planner
+          </button>
+
+          <button
+            className="mobile-nav-item"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/pass-alerts");
+            }}
+          >
+            <Bell size={18} />
+            Pass Alerts
+          </button>
+
+          <button
+            className="mobile-nav-item"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/tracking");
+            }}
+          >
+            <Activity size={18} />
+            Multi Tracking
+          </button>
+
+          <button
+            className="mobile-nav-item"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/best-satellite");
+            }}
+          >
+            <Star size={18} />
+            Best Satellite
+          </button>
+
+          <button
+            className="mobile-nav-item"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/historical-tracking");
+            }}
+          >
+            <Clock3 size={18} />
+            Historical Tracking
+          </button>
+
+          <button
+            className="mobile-nav-item"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              navigate("/satellite-comparison");
+            }}
+          >
+            <GitCompare size={18} />
+            Satellite Comparison
+          </button>
+
+        </nav>
+      </aside>
+
     </div>
   );
 }
