@@ -6165,3 +6165,69 @@ body {
   }
 
 }
+
+/* =========================================================
+   MOBILE HEADER ACTIONS
+   ========================================================= */
+
+@media (max-width: 650px) {
+  /* Dashboard header */
+  .topbar {
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .topbar > div:first-of-type {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: auto;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .topbar-actions .search-container,
+  .topbar-actions .icon-button {
+    display: none;
+  }
+
+  .topbar-actions .profile-wrapper {
+    display: block;
+    position: relative;
+  }
+
+  /* AppLayout header */
+  .top-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  .header-actions .profile-wrapper {
+    display: block;
+    position: relative;
+  }
+
+  .profile-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+  }
+}
