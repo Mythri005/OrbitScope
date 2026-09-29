@@ -9,6 +9,11 @@ export interface RegisterResponse {
   message: string;
 }
 
+export interface CurrentUser {
+  name: string | null;
+  email: string;
+}
+
 export async function login(
   email: string,
   password: string
@@ -30,13 +35,21 @@ export async function login(
 }
 
 export async function register(
+  name: string,
   email: string,
   password: string
 ): Promise<RegisterResponse> {
   const response = await api.post<RegisterResponse>("/register", {
+    name,
     email,
     password,
   });
+
+  return response.data;
+}
+
+export async function getCurrentUser(): Promise<CurrentUser> {
+  const response = await api.get<CurrentUser>("/me");
 
   return response.data;
 }

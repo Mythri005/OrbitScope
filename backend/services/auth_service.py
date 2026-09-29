@@ -22,6 +22,7 @@ class AuthService:
             raise UserAlreadyExistsException()
         hashed_password = hash_password(user.password)
         new_user = DBUser(
+            name=user.name,
             email=user.email,
             hashed_password=hashed_password
         )

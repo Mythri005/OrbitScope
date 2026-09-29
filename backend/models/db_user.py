@@ -9,6 +9,10 @@ class DBUser(Base):
         primary_key=True,
         index=True
     )
+    name = Column(
+        String,
+        nullable=True
+    )
     email = Column(
         String,
         unique=True,

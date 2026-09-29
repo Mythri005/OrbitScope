@@ -9,11 +9,35 @@ import {
   Satellite,
   Moon,
   Star,
+  LogOut,
 } from "lucide-react";
 
-import { NavLink, Outlet } from "react-router-dom";
+import {
+  NavLink,
+  Outlet,
+  useNavigate,
+} from "react-router-dom";
+
+import { useState } from "react";
+
+import { useAuth } from "../../context/AuthContext";
 
 export default function AppLayout() {
+  const navigate = useNavigate();
+
+  const { currentUser } = useAuth();
+
+  const [profileOpen, setProfileOpen] =
+    useState(false);
+
+  function handleLogout() {
+    localStorage.removeItem("access_token");
+
+    setProfileOpen(false);
+
+    navigate("/login");
+  }
+
   return (
     <div className="app-shell">
 
@@ -131,7 +155,9 @@ export default function AppLayout() {
           <NavLink
             to="/tracking"
             className={({ isActive }) =>
-              `nav-item ${isActive ? "active" : ""}`
+              `nav-item ${
+                isActive ? "active" : ""
+              }`
             }
           >
             <Activity size={15} />
@@ -141,7 +167,9 @@ export default function AppLayout() {
           <NavLink
             to="/best-satellite"
             className={({ isActive }) =>
-              `nav-item ${isActive ? "active" : ""}`
+              `nav-item ${
+                isActive ? "active" : ""
+              }`
             }
           >
             <Star size={15} />
@@ -151,7 +179,9 @@ export default function AppLayout() {
           <NavLink
             to="/historical-tracking"
             className={({ isActive }) =>
-              `nav-item ${isActive ? "active" : ""}`
+              `nav-item ${
+                isActive ? "active" : ""
+              }`
             }
           >
             <Clock3 size={15} />
@@ -161,13 +191,15 @@ export default function AppLayout() {
           <NavLink
             to="/satellite-comparison"
             className={({ isActive }) =>
-              `nav-item ${isActive ? "active" : ""}`
+              `nav-item ${
+                isActive ? "active" : ""
+              }`
             }
           >
             <GitCompare size={15} />
             Satellite Comparison
           </NavLink>
-          
+
         </div>
 
 
@@ -191,9 +223,58 @@ export default function AppLayout() {
       </aside>
 
 
-      {/* Page content */}
+      {/* Main */}
       <main className="main-content">
+
+        {/* Header */}
+        <header className="top-header">
+
+          <div />
+
+          <div className="header-actions">
+
+            <div className="profile-wrapper">
+
+              <button
+                className="profile-button"
+                onClick={() =>
+                  setProfileOpen(
+                    (current) => !current
+                  )
+                }
+                aria-label="Open profile menu"
+                aria-expanded={profileOpen}
+              >
+                {currentUser?.name?.charAt(0).toUpperCase() || "M"}
+              </button>
+
+              {profileOpen && (
+                <div className="profile-menu">
+
+                  <div className="profile-menu-header">
+                    <strong>OrbitScope</strong>
+                    <span>Signed in</span>
+                  </div>
+
+                  <button
+                    className="profile-menu-item"
+                    onClick={handleLogout}
+                  >
+                    <LogOut size={16} />
+                    Log out
+                  </button>
+
+                </div>
+              )}
+
+            </div>
+
+          </div>
+
+        </header>
+
         <Outlet />
+
       </main>
 
     </div>

@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Orbit, Lock, Mail, ArrowRight } from "lucide-react";
+import {
+  Orbit,
+  Lock,
+  Mail,
+  User,
+  ArrowRight
+} from "lucide-react";
 
 import { register } from "../services/authService";
 
@@ -9,6 +15,7 @@ import "./Auth.css";
 export default function Signup() {
   const navigate = useNavigate();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -24,7 +31,7 @@ export default function Signup() {
     setLoading(true);
 
     try {
-      await register(email, password);
+      await register(name, email, password);
 
       navigate("/login");
     } catch {
@@ -67,6 +74,27 @@ export default function Signup() {
           onSubmit={handleSubmit}
           className="auth-form"
         >
+
+          <div className="input-group">
+            <label htmlFor="signup-name">
+              Name
+            </label>
+
+            <div className="input-wrapper">
+              <User size={18} />
+
+              <input
+                id="signup-name"
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(event) =>
+                  setName(event.target.value)
+                }
+                required
+              />
+            </div>
+          </div>
 
           <div className="input-group">
             <label htmlFor="signup-email">

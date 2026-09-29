@@ -104,16 +104,24 @@ class SatelliteService:
     
     def load_satellite(self, satellite_name):
         tle_data = self.download_tle()
-        lines = tle_data.splitlines()
+
+        lines = [
+            line.strip()
+            for line in tle_data.splitlines()
+            if line.strip()
+        ]
+
         for i in range(0, len(lines), 3):
-            if satellite_name.lower() in lines[i].strip().lower():
-                satellite = EarthSatellite(
-                    lines[i + 1],
-                    lines[i + 2],
-                    lines[i].strip(),
-                    self.ts
-                )
-                return satellite
+            if i + 2 < len(lines):
+                if satellite_name.lower() in lines[i].lower():
+                    satellite = EarthSatellite(
+                        lines[i + 1],
+                        lines[i + 2],
+                        lines[i],
+                        self.ts
+                    )
+                    return satellite
+
         return None
 
     def get_current_position(self, satellite_name):
@@ -144,19 +152,37 @@ class SatelliteService:
 
     def get_all_satellites(self):
         tle_data = self.download_tle()
-        lines = tle_data.splitlines()
+
+        lines = [
+            line.strip()
+            for line in tle_data.splitlines()
+            if line.strip()
+        ]
+
         satellites = []
+
         for i in range(0, len(lines), 3):
-            satellites.append(lines[i].strip())
+            if i + 2 < len(lines):
+                satellites.append(lines[i])
+
         return satellites
     
     def search_satellites(self, search_name):
         tle_data = self.download_tle()
-        lines = tle_data.splitlines()
+
+        lines = [
+            line.strip()
+            for line in tle_data.splitlines()
+            if line.strip()
+        ]
+
         satellites = []
+
         for i in range(0, len(lines), 3):
-            if search_name.lower() in lines[i].strip().lower():
-                satellites.append(lines[i].strip())
+            if i + 2 < len(lines):
+                if search_name.lower() in lines[i].lower():
+                    satellites.append(lines[i])
+
         return satellites
     
     def get_orbit_prediction(self, satellite_name: str, duration: int, interval: int):
@@ -524,7 +550,12 @@ class SatelliteService:
                 min_elevation
             )
         if not passes:
-            raise PassPredictionUnavailableException()
+            return PassPredictionResponse(
+                name=satellite.name,
+                passes=[],
+                best_pass_index=-1,
+                best_pass=None
+            )
         if sort_by == "elevation":
             passes.sort(
                 key=lambda satellite_pass: satellite_pass.max_elevation,

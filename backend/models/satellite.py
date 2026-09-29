@@ -46,7 +46,7 @@ class PassPredictionResponse(BaseModel):
     name: str
     passes: list[SatellitePass]
     best_pass_index: int
-    best_pass: SatellitePass
+    best_pass: SatellitePass | None
 
 class PassCalendarResponse(BaseModel):
     name: str

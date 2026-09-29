@@ -16,6 +16,7 @@ import {
   GitCompare,
   Globe2,
   Heart,
+  LogOut,
   MapPin,
   Moon,
   Satellite,
@@ -33,6 +34,8 @@ import {
 import { getFavorites } from "../services/favoriteService";
 
 import { useObserverLocation } from "../context/ObserverLocationContext";
+
+import { useAuth } from "../context/AuthContext";
 
 import { getSatelliteOrbit } from "../services/orbitService";
 
@@ -89,9 +92,22 @@ function StatCard({
 export default function Dashboard() {
   const navigate = useNavigate();
 
+  const { currentUser } = useAuth();
+
+  const [profileOpen, setProfileOpen] =
+    useState(false);
+
   const {
     activeLocation,
   } = useObserverLocation();
+
+  function handleLogout() {
+    localStorage.removeItem("access_token");
+
+    setProfileOpen(false);
+
+    navigate("/login");
+  }
 
   const [searchParams] = useSearchParams();
 
@@ -650,9 +666,41 @@ export default function Dashboard() {
               ◔
             </button>
 
-            <button className="profile-button">
-              M
-            </button>
+            <div className="profile-wrapper">
+
+              <button
+                className="profile-button"
+                onClick={() =>
+                  setProfileOpen(
+                    (current) => !current
+                  )
+                }
+                aria-label="Open profile menu"
+                aria-expanded={profileOpen}
+              >
+                {currentUser?.name?.charAt(0).toUpperCase() || "M"}
+              </button>
+
+              {profileOpen && (
+                <div className="profile-menu">
+
+                  <div className="profile-menu-header">
+                    <strong>OrbitScope</strong>
+                    <span>Signed in</span>
+                  </div>
+
+                  <button
+                    className="profile-menu-item"
+                    onClick={handleLogout}
+                  >
+                    <LogOut size={16} />
+                    Log out
+                  </button>
+
+                </div>
+              )}
+
+            </div>
 
           </div>
 
