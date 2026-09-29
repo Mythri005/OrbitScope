@@ -11,6 +11,7 @@ import {
   getLocations,
   type ObserverLocation,
 } from "../services/locationService";
+import { useAuth } from "./AuthContext";
 
 interface ObserverLocationContextValue {
   locations: ObserverLocation[];
@@ -33,12 +34,19 @@ export function ObserverLocationProvider({
 }: {
   children: ReactNode;
 }) {
+  const { isAuthenticated } = useAuth();
   const [locations, setLocations] = useState<ObserverLocation[]>([]);
   const [activeLocation, setActiveLocationState] =
     useState<ObserverLocation | null>(null);
   const [loading, setLoading] = useState(true);
 
   async function refreshLocations() {
+    if (!isAuthenticated) {
+      setLocations([]);
+      setActiveLocationState(null);
+      setLoading(false);
+      return;
+    }
     try {
       setLoading(true);
 
@@ -87,8 +95,15 @@ export function ObserverLocationProvider({
   }
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      setLocations([]);
+      setActiveLocationState(null);
+      setLoading(false);
+      return;
+    }
+
     void refreshLocations();
-  }, []);
+  }, [isAuthenticated]);
 
   const value = useMemo(
     () => ({
