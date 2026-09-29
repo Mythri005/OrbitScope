@@ -6232,21 +6232,10 @@ body {
   }
 }
 
-/* DESKTOP APP LAYOUT HEADER */
-.top-header {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
+/* =========================================================
+   DESKTOP APP LAYOUT HEADER
+   ========================================================= */
 
-.top-header .header-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  margin-left: auto;
-}
-
-/* DESKTOP APP LAYOUT HEADER */
 @media (min-width: 651px) {
   .top-header {
     display: flex;
