@@ -40,6 +40,32 @@ export default function Locations() {
     setShowForm(false);
   }
 
+  function handleUseCurrentLocation() {
+    if (!navigator.geolocation) {
+      setError("Location services are not supported by this browser.");
+      return;
+    }
+
+    setError("");
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLatitude(position.coords.latitude.toFixed(6));
+        setLongitude(position.coords.longitude.toFixed(6));
+      },
+      () => {
+        setError(
+          "Unable to get your location. Please allow location access or enter the coordinates manually."
+        );
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000,
+      }
+    );
+  }
+
   async function handleCreateLocation(
     event: React.FormEvent<HTMLFormElement>
   ) {
@@ -216,6 +242,15 @@ export default function Locations() {
                 />
               </label>
             </div>
+
+            <button
+              type="button"
+              className="secondary-button"
+              onClick={handleUseCurrentLocation}
+            >
+              <MapPin size={17} />
+              Use my current location
+            </button>
 
             <div className="form-actions">
               <button
